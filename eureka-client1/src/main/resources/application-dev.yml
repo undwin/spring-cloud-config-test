@@ -1,0 +1,73 @@
+server:
+    port: 8001
+#actuator配置
+management:
+    security:
+      enabled: false
+    health:
+        mail:
+            enabled: false
+ #注册服务中心地址
+eureka:
+    client:
+        service-url:
+            defaultZone: http://localhost:8000/eureka/
+zuul:
+  routes:
+    api-a:
+      path: /ribbon/**
+      serviceId: service-ribbon  #如果是/ribbon/**路径下的请求，则跳转到service-ribbon
+    api-b:
+      path: /feign/**
+      serviceId: service-feign  #如果是/feign/**路径下的请求，则跳转到service-feign
+spring:
+    application:
+       #注册服务名
+        name: eureka-client1
+    output:
+        ansi:
+        #控制台输出彩色
+            enabled: ALWAYS
+    datasource:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driverClassName: com.mysql.jdbc.Driver
+        druid:
+            first:  #数据源1
+                url: jdbc:mysql://127.0.0.1:3306/test?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&&autoReconnect=true&failOverReadOnly=false
+                username: root
+                password: root
+            second:  #数据源2
+                url: jdbc:mysql://127.0.0.1:3306/test?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&&autoReconnect=true&failOverReadOnly=false
+                username: root
+                password: root
+            initial-size: 10
+            max-active: 100
+            min-idle: 10
+            max-wait: 60000
+            pool-prepared-statements: true
+            max-pool-prepared-statement-per-connection-size: 20
+            time-between-eviction-runs-millis: 60000
+            min-evictable-idle-time-millis: 300000
+            validation-query: SELECT 1 FROM DUAL
+            test-while-idle: true
+            test-on-borrow: false
+            test-on-return: false
+            stat-view-servlet:
+                enabled: true
+                url-pattern: /druid/*
+                #login-username: admin
+                #login-password: admin
+            filter:
+                stat:
+                    log-slow-sql: true
+                    slow-sql-millis: 1000
+                    merge-sql: true
+                wall:
+                    config:
+                        multi-statement-allow: true
+
+# 日志
+logback:
+    logdir: C://wzlue-logs/wzlue-imports-web
+    appname: wzlue-web
+    logCount: 10000 #日志阈值
