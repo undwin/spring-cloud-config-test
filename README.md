@@ -1,2 +1,2 @@
-# spring-cloud-config-test
+# spring-cloud-test
 test
